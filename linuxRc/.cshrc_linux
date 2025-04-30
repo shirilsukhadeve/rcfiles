@@ -1,0 +1,230 @@
+# @(#)Cshrc -x 1.6 91/09/05 SMI
+#/usr/bin/sh -c 'echo inside .cshrc 1>&2'
+#/bin/cshrc -x 1.6 91/09/05 SMI
+#################################################################
+#
+#      .cshrc file
+#
+#     initial setup file for both interactive and noninteractive
+#     C-Shells
+#
+#################################################################
+
+#         set this for all shells
+umask 002
+
+##################################################################
+#
+#  Select the environment classes you wished defined at cshrc time
+#	** comment out those you do not want **
+#
+##################################################################
+#
+#setenv MY_SYB 10
+#setenv DEV_ENV ""
+#setenv QA_ENV ""
+#setenv PREL_ENV ""
+#setenv PROD_ENV ""
+#setenv PREV_ENV ""
+#setenv WABI_ENV ""
+#
+# If the above variables give you trouble, try resetting them as below.
+setenv DEV_ENV	1
+setenv QA_ENV	1
+setenv CCASE_ISO_DATE_FMT 0
+setenv PREL_ENV	1
+setenv PROD_ENV	1
+setenv PREV_ENV	1
+setenv WABI_ENV	1
+setenv ASE_ENV	1
+
+setenv IQ_UNLIMIT_CORE YES
+#setenv ENV_TOOLS /s1/xwaytools/XWAY_ENV/Login
+setenv ENV_TOOLS /s1/xwaytools/XWAY_ENV
+setenv zxzwd `pwd`
+setenv PRINTER pr-con6-12
+setenv MOZ_PRINTER_NAME pr-con6-12
+
+setenv P4USER
+setenv P4PASSWD
+
+
+##################################################################
+#
+#  If you wish to do all environment setup within .cshrc  and not
+#       in conjunction with a .login file,
+#       Then (and only then) uncomment the next 3 lines
+#	set path = ( . ~  /etc /usr/bin /usr/sbin /usr/etc /usr/ucb)
+#	cd  $ENV_TOOLS
+#	source login_env
+##################################################################
+
+
+if ( "$?XWAY_ENV" != 0 ) then
+	cd  $ENV_TOOLS
+
+	source alias_setup
+	cd $zxzwd
+
+###############################################################
+#
+# edit the next few lines if you wish to alter your prompt
+        if ( $?CLEARCASE_ROOT ) then
+                if ( "$OSNAME" == "DG" ) then
+                set prompt="`hostname`@$USER<`basename $CLEARCASE_ROOT`> "
+                else
+                set prompt="`hostname`@`whoami`<`basename $CLEARCASE_ROOT`> "
+                endif
+        else
+                if ( "$OSNAME" == "DG" ) then
+                set prompt="`hostname`@$USER> "
+                else
+                set prompt="`hostname`@`whoami`> "
+                endif
+        endif
+
+################################################################
+#
+#  If you wish to do all maintenance of your local aliases in a 
+#       separate setup file, then put them into a file called  
+#		.aliases   and uncomment the next line.
+#source ~/.aliases
+################################################################
+source ~/.aliascsh
+
+	endif
+endif
+unsetenv zxzwd
+#unsetenv ENV_TOOLS
+
+# set path = ( $path ~/tools /opt/NCD/xremote )
+
+set history=1000
+set ignoreeof
+set clobber
+ 
+# Test for rsh
+setenv zxzwd `pwd`
+echo $path |grep atria > /dev/null
+ 
+if ($status != 0) then
+         set path=($path /usr/sbin )
+         unsetenv XWAY_ENV
+         #cd /s1/xwaytools/XWAY_ENV
+         cd $ENV_TOOLS
+         source login_env
+         cd $zxzwd
+endif
+
+source $ENV_TOOLS/db_setup
+ 
+set system=`uname -s`
+if ("$system" == "AIX") then
+    unlimit
+    set ver=`uname -vr | awk '{print $2"."$1}'`
+    if ("$ver" == "5.3") then
+    	setenv PATH /usr/local/bin:/usr/ibmcxx/bin:$PATH
+    endif
+else if ("$system" == "OSF1") then
+    unlimit
+else if ("$system" == "Linux") then
+# Get rc from /usr/local/bin not /etc
+    set path = ( /usr/local/bin $path )
+else if ("$system" == "HP-UX") then
+    stty erase "^?"
+    stty intr  "^C"
+    stty kill  "^U"
+endif
+
+set aix_name=`uname -n`
+if ($aix_name  == "ibm64bld" || $aix_name == "ibm64qa") then
+ 	setenv POINTERSIZE 64
+endif
+
+# p4 setup
+#setenv P4PORT cutlass.inside.watcom.on.ca:1666
+setenv P4PORT cutlass:1666
+ 
+
+#         skip remaining setup if not an interactive shell
+if ($?TERM == 0 || $?prompt == 0) exit
+
+#          settings  for interactive shells
+
+
+#if ("$OS_CONFIG" == "LINUX86") then
+#	echo "By Default CM Directories will point to the view main_nbld_linux"
+#	setenv CUR_VIEW "main_nbld_linux"
+#	source ~/.setup_linux_vobs
+#endif
+
+#stty erase '' kill '' werase '' eof '' intr ''
+#alias ttyset	'stty erase "" kill "" werase "" eof "" intr ""'
+#alias ttyreset	'ttyset; tset -Q; reset'
+set filec
+#ttyset
+setenv autologout 0
+
+#is32Bit=""
+#if ( -f /usr/bin/isainfo ] ; then 
+#    is32Bit=`/usr/bin/isainfo -v | grep '^64.*applications'`
+#fi
+#if [ "$is32Bit" = "" ] ; then
+## 32 bit
+#    PTR="_32"
+#fi
+alias r rlogin
+
+if (`uname -s` == AIX) then
+     setenv TERM vt100
+     unalias vi
+else
+     setenv TERMINFO /usr/local/share/terminfo
+     setenv TERM xterm-color
+endif
+
+
+set autolist
+set autoexpand
+set autocorrect
+set correct = cmd
+set number
+set incsearch
+set ignorecase
+
+if ($shell == "/usr/bin/tcsh") then
+     bindkey ^R i-search-back
+endif
+set savehist = (10000 merge)
+if (`uname -s` == "Linux") then
+     bindkey ^R i-search-back
+     if (-d /usr/share/vim/vim60) then
+          setenv VIMRUNTIME /usr/share/vim/vim60
+     else if (-d /usr/share/vim/vim62) then
+          setenv VIMRUNTIME /usr/share/vim/vim62
+     else if (-d /usr/share/vim/vim63) then
+          setenv VIMRUNTIME /usr/share/vim/vim63
+     endif
+     setenv PATH $HOME/bin/linux:$PATH
+     alias vi "/usr/bin/vim"
+     alias cscope "/usr/bin/cscope"
+else if (`uname -s` == "SunOS") then
+     if (-d /usr/local/share/vim/vim71) then
+          setenv VIMRUNTIME /usr/local/share/vim/vim71
+     else if (-d /usr/global/opt/share/vim/vim70) then
+          setenv VIMRUNTIME /usr/global/opt/share/vim/vim70
+     else if (-d /usr/global/opt/share/vim/vim63) then
+          setenv VIMRUNTIME /usr/global/opt/share/vim/vim63
+     endif
+     setenv PATH /usr/bin:/usr/ucb/:$PATH
+else
+     setenv VIMRUNTIME /usr/global/opt/share/vim/vim63
+     setenv PATH /usr/bin:/usr/ucb/:$PATH
+endif
+
+
+
+source /s1/sainttools/unix_tools/.cshrc_ngbp
+
+bash
+#export IQ_ENFORCE_NO_DEFAULT_DBA='N'

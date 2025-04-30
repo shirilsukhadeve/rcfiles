@@ -1,0 +1,41 @@
+mkcd()
+{
+  test -e "$1" || mkdir -p "$1"
+  cd "$1"
+}
+
+alias publicip='curl https://ipinfo.io/ip'
+alias tl='tmux -2 list-sessions'
+alias ta='tmux -2 attach'
+alias tn='tmux -2 new-session -s'
+alias tk='tmux kill-session -t'
+alias tka='tmux kill-server'
+alias merge='git mergetool --tool=vimdiff'
+alias fetch='git fetch --progress -v'
+alias delete='git branch -D'
+alias killmydockers='docker kill $(docker ps --filter name=i500457* -aq)'
+alias k='kubectl'
+alias vim='nvim'
+
+alias reb='git pull --rebase'
+alias br='git branch -vv'
+alias ch='git checkout'
+alias gs='git stash'
+
+
+code()
+{
+    export SA_H="${HOME}/views/links/$IQVIEWNAME/gitsrc/sqla/src/"
+    export IQ_H="${HOME}/views/links/$IQVIEWNAME/gitsrc/cm/iqa/"
+    export PY_H="${HOME}/views/links/$IQVIEWNAME/gitsrc/cm/iqa/testlib/pyunit/testscripts"
+    ctag_dir=~/cscope/$IQVIEWNAME/`git symbolic-ref --short HEAD`/
+    echo $ctag_dir
+    mkcd "${ctag_dir}"
+    test -e cscope.out && rm cscope.out
+    find $IQ_H  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' > cscope.files
+    find $SA_H  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' >> cscope.files
+    find $PY_H -name '*.py' >> cscope.files
+    cscope -b
+    export CSCOPE_DB="${ctag_dir}/cscope.out"
+    cd -
+}

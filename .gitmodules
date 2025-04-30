@@ -1,0 +1,6 @@
+[submodule "linuxRc/oh-my-bash"]
+	path = linuxRc/oh-my-bash
+	url = https://github.com/ohmybash/oh-my-bash.git
+[submodule "nvim/lazy.nvim"]
+	path = nvim/lazy.nvim
+	url = https://github.com/folke/lazy.nvim.git

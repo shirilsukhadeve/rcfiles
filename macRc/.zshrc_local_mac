@@ -1,0 +1,36 @@
+setconfigalias() {
+	if [[ -d $HOME/.cfg ]]; then
+		#echo -e "setting alias to $HOME/.cfg"
+		alias cdcfg='cd $HOME/.cfg'
+	fi
+}
+setconfigalias
+eval $(thefuck --alias)
+eval $(thefuck --alias fk)
+PS1='$(kube_ps1)'$PS1
+#exports for node12.else not needed
+export PATH="/opt/homebrew/opt/node@12/bin:$PATH"
+export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk@11/include:$CPPFLAGS"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
+
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+# Aliases
+alias ls='ls --color'
+alias publicip='curl https://ipinfo.io/ip'
+alias k='kubectl'
+alias merge='git mergetool --tool=vimdiff'
+alias fetch='git fetch --progress -v'
+alias delete='git branch -D'
+alias a51me='cd /area51/temp/shiril'
+alias python=python3
+alias iqclient='docker run --rm -it -v ${HOME}/.velocity-client.config.json:/.velocity-client.config.json -e CONFIG_FILE=/.velocity-client.config.json hdlsof.int.repositories.cloud.sap/com.sap.hana.cloud.hdl/velocity-client:4.0.3 -config '
+alias cleankconfig='rm -rf ~/.kube/http-cache;rm -rf ~/.kube/cache;rm -rf ~/.kube/cache/oidc-login'
+alias vim='nvim'

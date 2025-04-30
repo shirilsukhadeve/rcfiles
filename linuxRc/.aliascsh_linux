@@ -1,0 +1,8 @@
+alias tl 'tmux list-sessions'
+alias ta 'tmux attach'
+alias tn 'tmux new-session -s'
+alias tk 'tmux kill-session -t'
+alias tka 'tmux kill-server'
+alias merge 'git mergetool --tool=vimdiff'
+alias fetch 'git fetch --progress -v'
+alias delete 'git branch -D'
