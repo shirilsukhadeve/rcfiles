@@ -1,3 +1,34 @@
+if which tmux >/dev/null 2>&1; then
+  #if not inside a tmux session, and if no session is started, start a new session
+  test -z "$TMUX" && (tmux -2 attach || tmux -2 new-session)
+fi
+
+export DATA_DIR='/data'
+export CFG_DIR=$HOME/.cfg # in bashrc_0
+
+if [[ -d $CFG_DIR ]]; then
+  alias cdcfg='cd $CFG_DIR'
+  export PATH=$PATH:$CFG_DIR/usefulscripts
+fi
+
+#aliases
+alias publicip='curl https://ipinfo.io/ip'
+alias tl='tmux -2 list-sessions'
+alias ta='tmux -2 attach'
+alias tn='tmux -2 new-session -s'
+alias tk='tmux kill-session -t'
+alias tka='tmux kill-server'
+alias merge='git mergetool --tool=vimdiff'
+alias fetch='git fetch --progress -v'
+alias delete='git branch -D'
+alias k='kubectl'
+alias vim='nvim'
+
+alias reb='git pull --rebase'
+alias br='git branch -vv'
+alias ch='git checkout'
+alias gs='git stash'
+
 # Enable the subsequent settings only in interactive sessions
 case $- in
   *i*) ;;
@@ -5,7 +36,7 @@ case $- in
 esac
 
 # Path to your oh-my-bash installation.
-export OSH=$HOME/.cfg/linuxRc/oh-my-bash
+export OSH=$HOME/oh-my-bash
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
@@ -111,33 +142,24 @@ plugins=(
 #      plugins+=(tmux-autoattach)
 #  fi
 
-source "$OSH"/oh-my-bash.sh
+# source "$OSH"/oh-my-bash.sh
 
-# User configuration
-# export MANPATH="/usr/local/man:$MANPATH"
+mkcd()
+{
+  test -e "$1" || mkdir -p "$1"
+  cd "$1"
+}
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-bash libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-bash
-# users are encouraged to define aliases within the OSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias bashconfig="mate ~/.bashrc"
-# alias ohmybash="mate ~/.oh-my-bash"
-source $HOME/.bashrc_1
+code()
+{
+    export SQL_H="${DATA_DIR}/mysql/"
+    ctag_dir=$DATA_DIR/cscope/mysql/`git symbolic-ref --short HEAD`/
+    echo $ctag_dir
+    mkcd "${ctag_dir}"
+    test -e cscope.out && rm cscope.out
+    find $SQL_H  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' >> cscope.files
+    find $PY_H -name '*.py' >> cscope.files
+    cscope -b
+    export CSCOPE_DB="${ctag_dir}/cscope.out"
+    cd -
+}

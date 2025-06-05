@@ -1,4 +1,0 @@
-test -e /Users/I500457/.iterm2_shell_integration.zsh && source /Users/I500457/.iterm2_shell_integration.zsh || true
-eval "$(/opt/homebrew/bin/brew shellenv)"
-LC_CTYPE=en_US.UTF-8
-LC_ALL=en_US.UTF-8

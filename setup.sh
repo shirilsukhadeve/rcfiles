@@ -14,12 +14,10 @@ installohmyzsh=false
 installvscode=false
 installall=false
 
-ME=$(whoami) #this is used for folders
-
 thankyou() {
 	echo -e " -------------------------------------------------------"
 	echo -e "|		Thank You				|"
-	echo -e "|	Suggestions: shiril.sukhadeve@sap.com		|"
+	echo -e "|	Suggestions: shirilsukhadeve@gmail.com		|"
 	echo -e " -------------------------------------------------------"
 }
 
@@ -31,8 +29,6 @@ setalias() {
 # write all the instructions here
 helpFunction() {
 	 echo -e "Usage: $0"
-	 echo -e "\t\t-u			if you do not have your own RC files in repo, use someone else's by providing their inumber"
-	 echo -e "\t\t			e.g. -u i500457, if not provided, user will be taken by command whoami"
 	 echo -e "\t\t-backup			backup existing rc files in $HOME/rcbackup folder"
 	 echo -e "\t\t-newmac			starts setup for mac with basic dependencies to start on new Mac"
 	 echo -e "\t\t  --a			installs all additional items on mac"
@@ -85,36 +81,37 @@ setupVimandTmux() {
 	echo -e "\t-->> linking .vimrc and .tmux.conf files"
 	rm $HOME/.tmux.conf > /dev/null 2>&1
 	rm $HOME/.vimrc > /dev/null 2>&1
-	ln -s $HOME/.cfg/$ME/.tmux.conf $HOME/.tmux.conf
-	ln -s $HOME/.cfg/$ME/.vimrc $HOME/.vimrc
-    ln -s $HOME/.cfg/$ME/nvim $HOME/.config/nvim
-    ln -s $HOME/.cfg/$ME/nvim/lazy.nvim $HOME/lazy
+	ln -s $HOME/.cfg/.tmux.conf $HOME/.tmux.conf
+	ln -s $HOME/.cfg/.vimrc $HOME/.vimrc
+    ln -s $HOME/.cfg/nvim $HOME/.config/nvim
+    ln -s $HOME/.cfg/nvim/lazy.nvim $HOME/lazy
 }
 
 #setup or linux
 setupLinux() {
-	if [[ "$(expr substr $HOSTNAME 1 4)" == "lint" || "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
-		if [[ ! -d "$HOME/.cfg/$ME/linuxRc" ]]; then
-			echo -e "We do not have any directory for $ME . Please create one or use -u option to use other's"
-			echo -e "for instructions on how to create your own dir please check folder i500457 linuxRc/setupConfig_linux.sh for eg"
-			exit 1
-		fi
+    #export CFG_DIR='$HOME/.cfg' # in bashrc_0
+    export DATA_DIR='/data' # in DATA_DIR
+    export CFG_DIR=$DATA_DIR/.cfg # in bashrc_0
+    echo -e "Linking .cfg dir"
+    ln -s $CFG_DIR $HOME/.cfg
 
-		echo -e "Setting up your Linux Box"
-		removeRCFolders
-		removeRCFiles
+    if [[ ! -d "$HOME/.cfg/linuxRc" ]]; then
+        echo -e "We do not have any directory for linux"
+        exit 1
+    fi
 
-		#script to link all the RC files.
-		chmod 777 $HOME/.cfg/$ME/linuxRc/setupConfig_linux.sh
-		$HOME/.cfg/$ME/linuxRc/setupConfig_linux.sh
+    echo -e "Setting up your Linux Box"
+    # removeRCFolders
+    # removeRCFiles
 
-		setupVimandTmux
-		setalias
+    #script to link all the RC files.
+    chmod 777 $HOME/.cfg/linuxRc/setupConfig_linux.sh
+    $HOME/.cfg/linuxRc/setupConfig_linux.sh
 
-		thankyou
-	else
-		echo -e "You are not running this script on Linux or lint boxes. Skipping execution"
-	fi
+    setupVimandTmux
+    setalias
+
+    thankyou
 }
 
 
@@ -182,8 +179,6 @@ fi
 #check what is to be done
 while true; do
 	case $1 in
-	-u)
-		ME=$2; shift;;
 	-backup)
 		backupRcFiles; shift ;;
 	-linuxrc)

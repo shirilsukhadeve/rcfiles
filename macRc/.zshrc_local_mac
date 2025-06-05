@@ -5,16 +5,12 @@ setconfigalias() {
 	fi
 }
 setconfigalias
-eval $(thefuck --alias)
-eval $(thefuck --alias fk)
-PS1='$(kube_ps1)'$PS1
 #exports for node12.else not needed
 export PATH="/opt/homebrew/opt/node@12/bin:$PATH"
 export PATH="/opt/homebrew/opt/scala@2.12/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk@11/include:$CPPFLAGS"
 export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-source "/opt/homebrew/opt/kube-ps1/share/kube-ps1.sh"
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
