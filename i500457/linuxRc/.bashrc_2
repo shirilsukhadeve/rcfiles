@@ -1,0 +1,153 @@
+#echo -e "sourcing .bashrc_local on $HOSTNAME"
+if [[ -d "${HOME}/undo/undo-6.12.1" ]]; then
+  export PATH=$PATH:/home/i500457/undo/undo-6.12.1
+  export UNDO_user=I500457
+fi
+
+mkcd()
+{
+  test -e "$1" || mkdir -p "$1"
+  cd "$1"
+}
+
+alias publicip='curl https://ipinfo.io/ip'
+alias tl='tmux -2 list-sessions'
+alias ta='tmux -2 attach'
+alias tn='tmux -2 new-session -s'
+alias tk='tmux kill-session -t'
+alias tka='tmux kill-server'
+alias merge='git mergetool --tool=vimdiff'
+alias fetch='git fetch --progress -v'
+alias delete='git branch -D'
+alias a51me='cd /area51/temp/shiril'
+alias killmydockers='docker kill $(docker ps --filter name=i500457* -aq)'
+alias k='kubectl'
+alias vim='nvim'
+
+alias reb='git pull --rebase'
+alias br='git branch -vv'
+alias chdt='git checkout -b orange-hanadt origin/orange-hanadt'
+alias ch='git checkout'
+alias pushdt='git push gerrit HEAD:refs/for/orange-hanadt'
+alias gs='git stash'
+alias sendtomac='function _sendtomac(){ scp $1 I500457@macbook-air.dhcp.pnq.sap.corp:/Users/I500457/RemoteMachineDownloads/ ; }; _sendtomac'
+
+if [[ $USING_IQ_DEV_ENV == true ]]; then
+
+  alias setupd='setup -makelinks -noscc -nounload debug64'
+  alias setupp='setup -makelinks -noscc -nounload prod64'
+  alias setupdc='setup -copylinks -noscc -nounload debug64'
+  alias setuppc='setup -copylinks -noscc -nounload prod64'
+  alias cleansetup='cd ..;rm -rf local_setup;mkdir local_setup;cd local_setup'
+  alias master_pull='git merge --no-commit --no-ff --log origin/master'
+  alias sof_master_push='git merge --no-commit --no-ff --log origin/dev-sof'
+  if [[ "$(expr substr $HOSTNAME 1 10)" == "lint16hdla" ]]; then
+    #echo -e "sourcing server aliases on $HOSTNAME"
+    alias localsrvundo='function _localsrvundo(){ LD_PRELOAD=/home/i500457/undo/undo-6.12.1/libundodb_aio_preload_x64.so iqsrv17 -pf /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.pid -c 48m -gc 20 -gd all -gl all -gm 30 -gp 4096 -ti 4400 -iqnumbercpus 16 -iqdl_hdlfs_endpoint https://lint16hdla.phl.sap.corp:$1 -iqdl_hdlfs_cacert /lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/ca-cert.pem -iqdl_hdlfs_clientcert /lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/client-cert.pem -iqdl_hdlfs_certkey /lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/client-key.pem -iqdl_hdlfs_peerverification 0 -iqdl_hdlfs_default_container cfcwithsapca -hdatalake -hcust_audit_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/cust -hsap_audit_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/sap -gu DBA -n SOFTPCHSimplex_lint16hdla_5457 -x "tcpip{port=5457}" -o /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.out -oe /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.stderr -zoc /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457_webclientlog.out -su dba,sqlsql /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_db 2>&1 | tee out ; }; _localsrvundo'
+    alias localsrv='function _localsrv(){ iqsrv17 -pf /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.pid -c 48m -gc 20 -gd all -gl all -gm 30 -gp 4096 -ti 4400 -iqnumbercpus 16 -iqdl_hdlfs_endpoint https://lint16hdla.phl.sap.corp:$1 -iqdl_hdlfs_cacert /lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/ca-cert.pem -iqdl_hdlfs_clientcert /lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/client-cert.pem -iqdl_hdlfs_certkey /lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/client-key.pem -iqdl_hdlfs_peerverification 0 -iqdl_hdlfs_default_container cfcwithsapca -hdatalake -hcust_audit_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/cust -hsap_audit_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/sap -gu DBA -n SOFTPCHSimplex_lint16hdla_5457 -x "tcpip{port=5457}" -o /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.out -oe /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.stderr -zoc /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457_webclientlog.out -su dba,sqlsql /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_db 2>&1 | tee out ; }; _localsrv'
+    alias demohdlfssrv='function _demohdlfssrv(){ iqsrv17 -pf /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.pid -c 48m -gc 20 -gd all -gl all -gm 30 -gp 4096 -ti 4400 -iqnumbercpus 30 -iqdl_hdlfs_endpoint https://504fff9d-7903-48c0-9476-6de2c5e2b753.files.hdl.demo-hc-3-hdl-hc-dev.dev-aws.hanacloud.ondemand.com:443 -iqdl_hdlfs_peerverification 0 -iqdl_hdlfs_cacert /lint16hdla1/users/i500457/local_setup/pyunit_shared/testscripts/datalake/demo-hc-3-iqbarrier-sof-tests-certs/ca.crt -iqdl_hdlfs_clientcert /lint16hdla1/users/i500457/local_setup/pyunit_shared/testscripts/datalake/demo-hc-3-iqbarrier-sof-tests-certs/client.crt -iqdl_hdlfs_certkey /lint16hdla1/users/i500457/local_setup/pyunit_shared/testscripts/datalake/demo-hc-3-iqbarrier-sof-tests-certs/client.key -iqdl_hdlfs_default_container 504fff9d-7903-48c0-9476-6de2c5e2b753 -iqmc 1024 -iqtc 1024 -hdatalake -hcust_audit_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/cust -hsap_audit_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/sap -hwebclientlog_dir /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex -gu DBA -n SOFTPCHSimplex_lint16hdla_5457 -x "tcpip{port=5457}" -zrall -zo /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.sql -o /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.out -oe /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5457.stderr -su dba,sqlsql /lint16hdla1/users/i500457/local_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_db 2>&1 | tee out ; }; _demohdlfssrv'
+    alias demosrv='function _demosrv(){ iqsrv17 -pf /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5500.pid -c 48m -gc 20 -gd all -gl all -gm 30 -gp 4096 -ti 4400 -iqnumbercpus 16 -iqdl_hdlfs_endpoint https://lint16hdla.phl.sap.corp:$1 -iqdl_hdlfs_cacert /lint16hdla1/users/i500457/demo_setup/tmp/hdlfs/i500457/ca-cert.pem -iqdl_hdlfs_clientcert /lint16hdla1/users/i500457/demo_setup/tmp/hdlfs/i500457/client-cert.pem -iqdl_hdlfs_certkey /lint16hdla1/users/i500457/demo_setup/tmp/hdlfs/i500457/client-key.pem -iqdl_hdlfs_peerverification 0 -iqdl_hdlfs_default_container cfcwithsapca -hdatalake -hcust_audit_dir /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/cust -hsap_audit_dir /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/sap -gu DBA -n SOFTPCHSimplex_lint16hdla_5500 -x "tcpip{port=5500}" -o /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5500.out -oe /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5500.stderr -zoc /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_lint16hdla_5500_webclientlog.out -su dba,sqlsql /lint16hdla1/users/i500457/demo_setup/pyunit_shared/datalake/SOFTPCHSimplex/SOFTPCHSimplex_db 2>&1 | tee out ; }; _demosrv'
+    alias client="dbisqlc -c 'uid=DBA;pwd=sqlsql;eng=SOFTPCHSimplex_lint16hdla_5457;dbn=SOFTPCHSimplex_db'"
+    alias democlient="dbisqlc -c 'uid=DBA;pwd=sqlsql;eng=SOFTPCHSimplex_lint16hdla_5500;dbn=SOFTPCHSimplex_db'"
+    alias rundbisql="dbisql -c 'uid=DBA;pwd=sqlsql;eng=shiril_local;links=tcpip{host=lint16muthaa.phl.sap.corp;port=50045}' -nogui"
+    alias dir='cd /lint16hdla1/users/i500457'
+    alias setup_dir='cd /lint16hdla1/users/i500457/local_setup'
+    alias failures='cd /lint16hdla1/users/i500457/failures'
+    alias hdlfscli='/lint16hdla1/users/i500457/iq_client/IQ-17_1/bin64/hdlfscli'
+    alias dbaas='cd /lint16hdla1/users/i500457/hdlRepos'
+    export PATH=$PATH:/lint16hdla1/users/i500457/aws/aws-cli
+    export PATH=$PATH:/lint16hdla1/users/i500457/cmake/cmake-3.21.1-linux-x86_64/bin
+
+    #exports for hdl landscape related commands
+    export PATH="/lint16hdla1/users/i500457/aws/aws-cli:$PATH"
+    export PATH="/lint16hdla1/users/i500457/hdlRepos/landscape:$PATH"
+
+    #exports for data_platform
+    export PATH="/lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/bin:$PATH"
+    alias dpe='cd /lint16hdla1/users/i500457/hdlRepos/data_platform_performance'
+    alias kafka="cd /lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/bin"
+    alias zookeeper='/lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/bin/zookeeper-server-start.sh /lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/config/zookeeper.properties'
+    alias broker1='/lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/bin/kafka-server-start.sh /lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/config/server1.properties'
+    alias broker2='/lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/bin/kafka-server-start.sh /lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/config/server2.properties'
+    alias broker3='/lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/bin/kafka-server-start.sh /lint16hdla1/users/i500457/hdlRepos/data_platform_performance/kafka_2.13-3.4.0/config/server3.properties'
+
+    #export after oh-my-bash exports
+    export HISTSIZE=100000
+
+  fi
+
+  code()
+  {
+    export SA_H="${HOME}/views/links/$IQVIEWNAME/gitsrc/sqla/src/"
+    export IQ_H="${HOME}/views/links/$IQVIEWNAME/gitsrc/cm/iqa/"
+    export PY_H="${HOME}/views/links/$IQVIEWNAME/gitsrc/cm/iqa/testlib/pyunit/testscripts"
+    ctag_dir=~/cscope/$IQVIEWNAME/`git symbolic-ref --short HEAD`/
+    echo $ctag_dir
+    mkcd "${ctag_dir}"
+    test -e cscope.out && rm cscope.out
+    find $IQ_H  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' > cscope.files
+    find $SA_H  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' >> cscope.files
+    find $PY_H -name '*.py' >> cscope.files
+    cscope -b
+    export CSCOPE_DB="${ctag_dir}/cscope.out"
+    cd -
+  }
+
+  sofexports_local(){
+    export HC_TOGGLES="/lint16hdla1/users/i500457/local_setup/hc-featureflags/flags"
+    export SQLONFILES_SERVICE_CERTIFICATE="file=/lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/ca_bundle;identity=/lint16hdla1/users/i500457/local_setup/tmp/hdlfs/i500457/iq.id";
+    export SQLONFILES_SERVICE_RETRY_SLEEP_IN_SECONDS="0";
+    export SQLONFILES_SERVICE_RETRY_TIMEOUT_IN_SECONDS="0";
+    export SQLONFILES_SERVICE_URL=https://localhost:30018
+  }
+  sofexports_demo(){
+    export HC_TOGGLES="/lint16hdla1/users/i500457/local_setup/hc-featureflags/flags"
+    #export SQLONFILES_SERVICE_CERTIFICATE="file=/lint16hdla1/users/i500457/local_setup/pyunit_shared/testscripts/datalake/demo-hc-3-iqbarrier-sof-tests-certs/ca.crt;identity=/lint16hdla1/users/i500457/local_setup/pyunit_shared/testscripts/datalake/demo-hc-3-iqbarrier-sof-tests-certs/iq.id";
+    export SQLONFILES_SERVICE_CERTIFICATE="file=none;identity=/lint16hdla1/users/i500457/local_setup/pyunit_shared/testscripts/datalake/demo-hc-3-iqbarrier-sof-tests-certs/iq.id";
+    export SQLONFILES_SERVICE_RETRY_SLEEP_IN_SECONDS="0";
+    export SQLONFILES_SERVICE_RETRY_TIMEOUT_IN_SECONDS="0";
+    export SQLONFILES_SERVICE_URL=https://504fff9d-7903-48c0-9476-6de2c5e2b753.files.hdl.demo-hc-3-hdl-hc-dev.dev-aws.hanacloud.ondemand.com:443
+  }
+
+fi
+
+export PATH="/usr/local/bin:$PATH"
+export PATH=$PATH:/usr/sbin
+export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/bin/nvim-linux64/bin
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/.config/coc/extensions/coc-clangd-data/install/12.0.0/clangd_12.0.0/bin
+export PATH="$PATH:/opt/nvim-linux64/bin"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# check if vim8.2 is installed locally and if so then check use that
+if [[ -f "/usr/local/bin/vim"  ]]; then
+    hash -p /usr/local/bin/vim vim
+fi
+#if [[ -d $HOME/bin/vim/bin ]]; then
+  #alias vim='/home/i500457/bin/vim/bin/vim'
+  #alias vimdiff='/home/i500457/bin/vim/bin/vimdiff'
+  #export PATH=$PATH:$HOME/bin/vim/bin
+#fi
+
+#sabuild -j32 2>&1 | tee out | grep -i "error:\|failed\|updated"
+#iqbuild -j40 2>&1 | tee out | grep -i "error:\|failed\|passed"
+#buildall -j40 2>&1 | tee out | grep -i "error:\|failed:\|passed\|updated"
+
+
+if [[ $HOSTNAME == "lint15dthc.phl.sap.corp" ]]; then
+  echo -e "Setting HANA env for $HOSTNAME"
+  export HANA_HOME=/lint15dthc1/users/i500457
+  alias cdhana='cd $HANA_HOME; source $HANA_HOME/.bashrc_hana'
+fi
+
+if [[ $HOSTNAME == "i500457" || $HOSTNAME == "ccde1gl3086" ]]; then
+  host=$(hostname -f)
+  echo -e "Setting HANA env for $host"
+  export HANA_HOME=/data/i500457
+  source $HANA_HOME/.bashrc_hana
+  alias cdhana='cd $HANA_HOME; source $HANA_HOME/.bashrc_hana'
+fi

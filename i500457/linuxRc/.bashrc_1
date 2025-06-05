@@ -1,0 +1,44 @@
+#
+# Define default prompt to <username>@<hostname>:<path><"($|#) ">
+# and print '#' for user "root" and '$' for normal users.
+#
+if [[ -d $HOME/.cfg ]]; then
+  alias cdcfg='cd $HOME/.cfg'
+  export PATH=$PATH:$HOME/.cfg/i500457/usefulscripts
+fi
+
+export SAP_INUMBER=`whoami`
+export IQ_ENFORCE_NO_DEFAULT_DBA='N'
+export GREP_COLOR='1;34' #blue color
+typeset +x PS1="\u@\h:\w\\$ "
+export DEV_ENV=1
+export QA_ENV=1
+export PREL_ENV=1
+export PROD_ENV=1
+export PREV_ENV=1
+export WABI_ENV=1
+export ASE_ENV=1
+export SUNSTUDIOVER=11
+
+
+if which tmux >/dev/null 2>&1; then
+  #if not inside a tmux session, and if no session is started, start a new session
+  test -z "$TMUX" && (tmux -2 attach || tmux -2 new-session)
+fi
+
+if [[ "$(expr substr $HOSTNAME 1 4)" == "lint" ]]; then
+  echo -e "setting your IQ dev env on $HOSTNAME"
+  export USING_IQ_DEV_ENV=true
+  export ENV_TOOLS='/s1/xwaytools/XWAY_ENV'
+  if [ "$ENV15" = "1" ]; then
+    echo "sourcing bashrc_15x"
+    source $HOME/.bashrc_15x
+  elif [ "$ENVGIT" = "1" ]; then
+    echo "sourcing bashrc_git"
+    source /s1/sainttools/unix_tools/.bashrc_git
+  else
+    echo "sourcing bashrc_ngbp"
+    source /s1/sainttools/unix_tools/.bashrc_ngbp
+  fi
+fi
+source ~/.bashrc_2

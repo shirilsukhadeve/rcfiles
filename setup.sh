@@ -19,7 +19,7 @@ ME=$(whoami) #this is used for folders
 thankyou() {
 	echo -e " -------------------------------------------------------"
 	echo -e "|		Thank You				|"
-	echo -e "|	Suggestions: shirilsukhadeve@gmail.com		|"
+	echo -e "|	Suggestions: shiril.sukhadeve@sap.com		|"
 	echo -e " -------------------------------------------------------"
 }
 
@@ -31,6 +31,8 @@ setalias() {
 # write all the instructions here
 helpFunction() {
 	 echo -e "Usage: $0"
+	 echo -e "\t\t-u			if you do not have your own RC files in repo, use someone else's by providing their inumber"
+	 echo -e "\t\t			e.g. -u i500457, if not provided, user will be taken by command whoami"
 	 echo -e "\t\t-backup			backup existing rc files in $HOME/rcbackup folder"
 	 echo -e "\t\t-newmac			starts setup for mac with basic dependencies to start on new Mac"
 	 echo -e "\t\t  --a			installs all additional items on mac"
@@ -83,17 +85,18 @@ setupVimandTmux() {
 	echo -e "\t-->> linking .vimrc and .tmux.conf files"
 	rm $HOME/.tmux.conf > /dev/null 2>&1
 	rm $HOME/.vimrc > /dev/null 2>&1
-	ln -s $HOME/.cfg/.tmux.conf $HOME/.tmux.conf
-	ln -s $HOME/.cfg/.vimrc $HOME/.vimrc
-    ln -s $HOME/.cfg/nvim $HOME/.config/nvim
-    ln -s $HOME/.cfg/nvim/lazy.nvim $HOME/lazy
+	ln -s $HOME/.cfg/$ME/.tmux.conf $HOME/.tmux.conf
+	ln -s $HOME/.cfg/$ME/.vimrc $HOME/.vimrc
+    ln -s $HOME/.cfg/$ME/nvim $HOME/.config/nvim
+    ln -s $HOME/.cfg/$ME/nvim/lazy.nvim $HOME/lazy
 }
 
 #setup or linux
 setupLinux() {
 	if [[ "$(expr substr $HOSTNAME 1 4)" == "lint" || "$(expr substr $(uname -s) 1 5)" == "Linux" ]]; then
-		if [[ ! -d "$HOME/.cfg/linuxRc" ]]; then
-			echo -e "We do not have any directory for linux"
+		if [[ ! -d "$HOME/.cfg/$ME/linuxRc" ]]; then
+			echo -e "We do not have any directory for $ME . Please create one or use -u option to use other's"
+			echo -e "for instructions on how to create your own dir please check folder i500457 linuxRc/setupConfig_linux.sh for eg"
 			exit 1
 		fi
 
@@ -102,8 +105,8 @@ setupLinux() {
 		removeRCFiles
 
 		#script to link all the RC files.
-		chmod 777 $HOME/.cfg/linuxRc/setupConfig_linux.sh
-		$HOME/.cfg/linuxRc/setupConfig_linux.sh
+		chmod 777 $HOME/.cfg/$ME/linuxRc/setupConfig_linux.sh
+		$HOME/.cfg/$ME/linuxRc/setupConfig_linux.sh
 
 		setupVimandTmux
 		setalias
@@ -139,8 +142,8 @@ setupMac() {
 		removeRCFiles
 		#setup RC files
 		#script to link all the RC files.
-		chmod 777 $HOME/.cfg/macRc/setupConfig_mac.sh
-		$HOME/.cfg/macRc/setupConfig_mac.sh
+		chmod 777 $HOME/.cfg/$ME/macRc/setupConfig_mac.sh
+		$HOME/.cfg/$ME/macRc/setupConfig_mac.sh
 
 		setupVimandTmux
 		thankyou
@@ -179,6 +182,8 @@ fi
 #check what is to be done
 while true; do
 	case $1 in
+	-u)
+		ME=$2; shift;;
 	-backup)
 		backupRcFiles; shift ;;
 	-linuxrc)
