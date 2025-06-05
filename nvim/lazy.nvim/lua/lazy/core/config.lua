@@ -96,6 +96,7 @@ M.defaults = {
     icons = {
       cmd = " ",
       config = "",
+      debug = "● ",
       event = " ",
       favorite = " ",
       ft = " ",
@@ -218,7 +219,7 @@ M.defaults = {
     enabled = true,
     root = vim.fn.stdpath("state") .. "/lazy/readme",
     files = { "README.md", "lua/**/README.md" },
-    -- only generate markdown helptags for plugins that dont have docs
+    -- only generate markdown helptags for plugins that don't have docs
     skip_if_doc_exists = true,
   },
   state = vim.fn.stdpath("state") .. "/lazy/state.json", -- state info for checker and other things
@@ -241,7 +242,7 @@ function M.hererocks()
   return M.options.rocks.hererocks
 end
 
-M.version = "11.14.1" -- x-release-please-version
+M.version = "11.17.1" -- x-release-please-version
 
 M.ns = vim.api.nvim_create_namespace("lazy")
 

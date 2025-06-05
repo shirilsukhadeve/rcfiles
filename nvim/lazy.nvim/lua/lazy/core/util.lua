@@ -270,7 +270,7 @@ function M.get_unloaded_rtp(modname, opts)
   local Config = require("lazy.core.config")
   if Config.spec then
     for _, plugin in pairs(Config.spec.plugins) do
-      if not (plugin._.loaded or plugin.module == false) then
+      if not (plugin._.loaded or plugin.module == false or plugin.virtual) then
         if norm == M.normname(plugin.name) then
           table.insert(rtp, 1, plugin.dir)
         else
@@ -374,6 +374,7 @@ function M.notify(msg, opts)
   local lang = opts.lang or "markdown"
   local n = opts.once and vim.notify_once or vim.notify
   n(msg, opts.level or vim.log.levels.INFO, {
+    ft = lang,
     on_open = function(win)
       local ok = pcall(function()
         vim.treesitter.language.add("markdown")
