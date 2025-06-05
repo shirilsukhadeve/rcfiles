@@ -81,10 +81,12 @@ setupVimandTmux() {
 	echo -e "\t-->> linking .vimrc and .tmux.conf files"
 	rm $HOME/.tmux.conf > /dev/null 2>&1
 	rm $HOME/.vimrc > /dev/null 2>&1
+	rm $HOME/.config/nvim > /dev/null 2>&1
+	rm $HOME/lazy > /dev/null 2>&1
 	ln -s $HOME/.cfg/.tmux.conf $HOME/.tmux.conf
 	ln -s $HOME/.cfg/.vimrc $HOME/.vimrc
-    ln -s $HOME/.cfg/nvim $HOME/.config/nvim
-    ln -s $HOME/.cfg/nvim/lazy.nvim $HOME/lazy
+	ln -s $HOME/.cfg/nvim $HOME/.config/nvim
+	ln -s $HOME/.cfg/nvim/lazy.nvim $HOME/lazy
 }
 
 #setup or linux
