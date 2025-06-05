@@ -5,24 +5,26 @@ fi
 
 export DATA_DIR='/data'
 export CFG_DIR=$HOME/.cfg # in bashrc_0
+export PATH="/usr/local/bin:$PATH"
 
 if [[ -d $CFG_DIR ]]; then
   alias cdcfg='cd $CFG_DIR'
   export PATH=$PATH:$CFG_DIR/usefulscripts
 fi
 
+export TERM='xterm-direct'
+
 #aliases
 alias publicip='curl https://ipinfo.io/ip'
-alias tl='tmux -2 list-sessions'
-alias ta='tmux -2 attach'
-alias tn='tmux -2 new-session -s'
-alias tk='tmux kill-session -t'
-alias tka='tmux kill-server'
+alias tl='TERM=screen-256color-bce tmux -2 list-sessions'
+alias ta='TERM=screen-256color-bce tmux -2 attach'
+alias tn='TERM=screen-256color-bce tmux -2 new-session -s'
+alias tk='TERM=screen-256color-bce tmux kill-session -t'
+alias tka='TERM=screen-256color-bce tmux kill-server'
 alias merge='git mergetool --tool=vimdiff'
 alias fetch='git fetch --progress -v'
 alias delete='git branch -D'
 alias k='kubectl'
-alias vim='nvim'
 
 alias reb='git pull --rebase'
 alias br='git branch -vv'

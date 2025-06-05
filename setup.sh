@@ -94,6 +94,7 @@ setupLinux() {
     #export CFG_DIR='$HOME/.cfg' # in bashrc_0
     export DATA_DIR='/data' # in DATA_DIR
     export CFG_DIR=$DATA_DIR/.cfg # in bashrc_0
+    rm $HOME/.cfg > /dev/null 2>&1
     echo -e "Linking .cfg dir"
     ln -s $CFG_DIR $HOME/.cfg
 
