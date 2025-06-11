@@ -30,4 +30,7 @@ function TogglePlugins()
     end
     plugins = not plugins
 end
+if vim.fn.has("termguicolors") == 1 then
+    vim.opt.termguicolors = true
+end
 require("config")
