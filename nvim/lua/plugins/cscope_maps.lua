@@ -29,7 +29,7 @@ return {
                 -- cscope related defaults
                 cscope = {
                     -- location of cscope db file
-                    db_file = "./cscope.out", -- DB or table of DBs
+                    db_file = use_db,         -- DB or table of DBs
                                               -- NOTE:
                                               --   when table of DBs is provided -
                                               --   first DB is "primary" and others are "secondary"
@@ -37,7 +37,7 @@ return {
                     -- cscope executable
                     exec = "cscope", -- "cscope" or "gtags-cscope"
                     -- choose your fav picker
-                    picker = "quickfix", -- "quickfix", "location", "telescope", "fzf-lua", "mini-pick" or "snacks"
+                    picker = "telescope", -- "quickfix", "location", "telescope", "fzf-lua", "mini-pick" or "snacks"
                     -- qf_window_size = 5, -- deprecated, replaced by picket_opts below, but still supported for backward compatibility
                     -- qf_window_pos = "bottom", -- deprecated, replaced by picket_opts below, but still supported for backward compatibility
                     picker_opts = {
@@ -73,5 +73,9 @@ return {
                 }
             }
         })
+
+        -- add the database. line 33 does not update the file correctly
+        vim.notify("Using cscope db " .. use_db, vim.log.levels.INFO)
+        vim.cmd("Cs db add " .. use_db)
     end,
 }
