@@ -1,8 +1,8 @@
 setconfigalias() {
-	if [[ -d $HOME/.cfg ]]; then
-		#echo -e "setting alias to $HOME/.cfg"
-		alias cdcfg='cd $HOME/.cfg'
-	fi
+    if [[ -d $HOME/.cfg ]]; then
+        #echo -e "setting alias to $HOME/.cfg"
+        alias cdcfg='cd $HOME/.cfg'
+    fi
 }
 setconfigalias
 #exports for node12.else not needed

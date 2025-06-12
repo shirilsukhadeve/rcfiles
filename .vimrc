@@ -212,7 +212,7 @@ let g:mkdp_auto_start=1
 let g:mkdp_auto_close=0
 let g:mkdp_refresh_slow=1
 let g:mkdp_browser = ''
-let g:mkdp_markdown_css=fnameescape($HOME).'/.cfg/i500457/usefulscripts/github-markdown.css'
+let g:mkdp_markdown_css=fnameescape($HOME).'/.cfg/usefulscripts/github-markdown.css'
 
 """""""""""""""""""""""""LIMELIGHT"""""""""""""""""""""""""
 let g:limelight_conceal_ctermfg = 'gray'

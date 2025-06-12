@@ -1,5 +1,8 @@
 local opt = vim.opt -- for conciseness
 local opt_local = vim.opt_local
+if vim.fn.has("termguicolors") == 1 then
+    opt.termguicolors = true
+end
 opt.number = true
 opt.cursorline = true
 opt.autoindent = true
