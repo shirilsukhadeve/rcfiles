@@ -5,7 +5,7 @@
 #
 ####################################
 #varaibles that are used in the script
-dotRcFiles=(.vimrc .tmux.conf .bashrc .zshrc .zshrc_local .cshrc .bashrc_1 .bashrc_2 .aliascsh .aliases .zprofile .hdlfscli.config.json)
+dotRcFiles=(.vimrc .tmux.conf .zshrc .zshrc_local .cshrc .bashrc_0 .aliases .zprofile .hdlfscli.config.json)
 dotRcFolders=(.oh-my-bash nvim lazy)
 #optionsforMacSetup
 installiterm2=false
@@ -107,6 +107,8 @@ setupLinux() {
     ln -s $HOME/.cfg/oh-my-bash $HOME/.oh-my-bash
     echo -e "\t\tlinking .bashrc_0"
     ln -s $HOME/.cfg/.bashrc_0 $HOME/.bashrc_0
+    echo -e "\t\tlinking .aliases"
+    ln -s $HOME/.cfg/.aliases $HOME/.aliases
 
     setupVimandTmux
     setalias
@@ -147,6 +149,8 @@ setupMac() {
         ln -s $HOME/.cfg/.zshrc_mac $HOME/.zshrc
         echo -e "\t\tlinking .zshrc_local"
         ln -s $HOME/.cfg/.zshrc_local_mac $HOME/.zshrc_local
+        echo -e "\t\tlinking .aliases"
+        ln -s $HOME/.cfg/.aliases $HOME/.aliases
 
         setupVimandTmux
         thankyou

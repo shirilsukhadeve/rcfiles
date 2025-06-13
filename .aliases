@@ -1,0 +1,33 @@
+#general
+alias publicip='curl https://ipinfo.io/ip'
+alias ls='ls --color'
+alias vim='nvim'
+
+
+#tmux
+alias tl='tmux -2 list-sessions'
+alias ta='tmux -2 attach'
+alias tn='tmux -2 new-session -s'
+alias tk='tmux kill-session -t'
+alias tka='tmux kill-server'
+
+
+#git
+alias merge='git mergetool --tool=vimdiff'
+alias fetch='git fetch --progress -v'
+alias delete='git branch -D'
+alias reb='git pull --rebase'
+alias br='git branch -vv'
+alias ch='git checkout'
+alias gs='git stash'
+
+
+#kubernetes
+alias k='kubectl'
+alias cleankconfig='rm -rf ~/.kube/http-cache;rm -rf ~/.kube/cache;rm -rf ~/.kube/cache/oidc-login'
+
+if [[ -d $HOME/.cfg ]]; then
+    #echo -e "setting alias to $HOME/.cfg"
+    alias cdcfg='cd $HOME/.cfg'
+    export PATH=$PATH:$CFG_DIR/usefulscripts
+fi
