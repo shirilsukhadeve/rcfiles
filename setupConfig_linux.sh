@@ -1,3 +1,4 @@
+#!/bin/bash
 ####################################################
 #I intend this file to be an example. Every one can
 #create one in their own dir but just keep the name
@@ -5,11 +6,8 @@
 #setup file
 ####################################################
 
-# mac exports
-echo -e "\t\tlinking .zprofile"
-ln -s $HOME/.cfg/macRc/.zprofile_mac $HOME/.zprofile
-echo -e "\t\tlinking .zshrc"
-ln -s $HOME/.cfg/macRc/.zshrc_mac $HOME/.zshrc
-echo -e "\t\tlinking .zshrc_local"
-ln -s $HOME/.cfg/macRc/.zshrc_local_mac $HOME/.zshrc_local
-
+# Linux exports
+echo -e "\t\tlinking .oh-my-bash"
+ln -s $HOME/.cfg/oh-my-bash $HOME/.oh-my-bash
+echo -e "\t\tlinking .bashrc_0"
+ln -s $HOME/.cfg/.bashrc_0 $HOME/.bashrc_0

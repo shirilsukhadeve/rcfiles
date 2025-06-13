@@ -98,18 +98,13 @@ setupLinux() {
     echo -e "Linking .cfg dir"
     ln -s $CFG_DIR $HOME/.cfg
 
-    if [[ ! -d "$HOME/.cfg/linuxRc" ]]; then
-        echo -e "We do not have any directory for linux"
-        exit 1
-    fi
-
     echo -e "Setting up your Linux Box"
     # removeRCFolders
     # removeRCFiles
 
     #script to link all the RC files.
-    chmod 777 $HOME/.cfg/linuxRc/setupConfig_linux.sh
-    $HOME/.cfg/linuxRc/setupConfig_linux.sh
+    chmod 777 $HOME/.cfg/setupConfig_linux.sh
+    $HOME/.cfg/setupConfig_linux.sh
 
     setupVimandTmux
     setalias
@@ -142,8 +137,8 @@ setupMac() {
 		removeRCFiles
 		#setup RC files
 		#script to link all the RC files.
-		chmod 777 $HOME/.cfg/$ME/macRc/setupConfig_mac.sh
-		$HOME/.cfg/$ME/macRc/setupConfig_mac.sh
+		chmod 777 $HOME/.cfg/setupConfig_mac.sh
+		$HOME/.cfg/setupConfig_mac.sh
 
 		setupVimandTmux
 		thankyou
