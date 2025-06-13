@@ -99,8 +99,8 @@ setupLinux() {
     ln -s $CFG_DIR $HOME/.cfg
 
     echo -e "Setting up your Linux Box"
-    # removeRCFolders
-    # removeRCFiles
+    removeRCFolders
+    removeRCFiles
 
     # Linux exports
     echo -e "\t\tlinking .oh-my-bash"
@@ -136,7 +136,9 @@ setupMac() {
     if [ "$(uname)" == "Darwin" ]; then
         echo -e "Setting up your RC files on Mac"
 
+        removeRCFolders
         removeRCFiles
+
         #setup RC files
         #script to link all the RC files.
         echo -e "\t\tlinking .zprofile"
