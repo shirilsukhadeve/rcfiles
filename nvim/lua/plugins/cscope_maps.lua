@@ -5,19 +5,49 @@ return {
         "nvim-telescope/telescope.nvim", -- optional [for picker="telescope"]
     },
     config = function()
-        local default_db = "./cscope.out"
-        local env_db = vim.env.CSCOPE_DB
-        local use_db = nil
+        local fn = vim.fn
 
-        if env_db and vim.fn.filereadable(env_db) == 1 then
-            use_db = env_db
-        elseif vim.fn.filereadable(default_db) == 1 then
-            use_db = default_db
+        -------------------------
+        -- Setup cscope DB path
+        -------------------------
+        local default_cs_db = "./cscope.out"
+        local env_cs_db = vim.env.CSCOPE_DB
+        local use_cs_db = nil
+
+        if env_cs_db and fn.filereadable(env_cs_db) == 1 then
+            use_cs_db = env_cs_db
+        elseif fn.filereadable(default_cs_db) == 1 then
+            use_cs_db = default_cs_db
         else
-            vim.notify("No cscope database found (neither ./cscope.out nor $CSCOPE_DB)", vim.log.levels.WARN)
+            vim.notify("No cscope database found (neither ./cscope.out nor $CSCOPE_DB)", vim.log.levels.INFO)
         end
 
-        if not use_db then return end  -- prevent setup if no DB
+        -------------------------
+        -- Setup ctags path
+        -------------------------
+        local default_ctags = "./tags"
+        local env_ctags = vim.env.CTAGS_DB
+        local use_ctags = nil
+
+        if env_ctags and fn.filereadable(env_ctags) == 1 then
+            use_ctags = env_ctags
+        elseif fn.filereadable(default_ctags) == 1 then
+            use_ctags = default_ctags
+        else
+            vim.notify("No ctags file found (neither ./tags nor $CTAGS_DB)", vim.log.levels.INFO)
+        end
+
+        -- Set Vim 'tags' option
+        if use_ctags then
+            vim.opt.tags = use_ctags
+            vim.notify("Using ctags file: " .. use_ctags, vim.log.levels.INFO)
+        end
+
+        -------------------------
+        -- Configure cscope_maps
+        -------------------------
+
+        if not use_cs_db then return end  -- prevent setup if no DB
 
         require("cscope_maps").setup({
             {
@@ -29,7 +59,7 @@ return {
                 -- cscope related defaults
                 cscope = {
                     -- location of cscope db file
-                    db_file = use_db,         -- DB or table of DBs
+                    db_file = use_cs_db,      -- DB or table of DBs
                                               -- NOTE:
                                               --   when table of DBs is provided -
                                               --   first DB is "primary" and others are "secondary"
@@ -75,7 +105,7 @@ return {
         })
 
         -- add the database. line 33 does not update the file correctly
-        vim.notify("Using cscope db " .. use_db, vim.log.levels.INFO)
-        vim.cmd("Cs db add " .. use_db)
+        vim.notify("Using cscope db:" .. use_cs_db, vim.log.levels.INFO)
+        vim.cmd("Cs db add " .. use_cs_db)
     end,
 }

@@ -5,7 +5,7 @@
 #
 ####################################
 #varaibles that are used in the script
-dotRcFiles=(.vimrc .tmux.conf .zshrc .zshrc_local .cshrc .bashrc_0 .aliases .zprofile .hdlfscli.config.json)
+dotRcFiles=(.vimrc .tmux.conf .zshrc .cshrc .bashrc_0 .aliases .zprofile .hdlfscli.config.json)
 dotRcFolders=(.oh-my-bash nvim lazy)
 #optionsforMacSetup
 installiterm2=false
@@ -147,8 +147,6 @@ setupMac() {
         ln -s $HOME/.cfg/.zprofile_mac $HOME/.zprofile
         echo -e "\t\tlinking .zshrc"
         ln -s $HOME/.cfg/.zshrc_mac $HOME/.zshrc
-        echo -e "\t\tlinking .zshrc_local"
-        ln -s $HOME/.cfg/.zshrc_local_mac $HOME/.zshrc_local
         echo -e "\t\tlinking .aliases"
         ln -s $HOME/.cfg/.aliases $HOME/.aliases
 

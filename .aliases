@@ -1,3 +1,10 @@
+# set cfg dir alias
+if [[ -d $HOME/.cfg ]]; then
+    #echo -e "setting alias to $HOME/.cfg"
+    alias cdcfg='cd $HOME/.cfg'
+    export PATH=$PATH:$HOME/.cfg/usefulscripts
+fi
+
 #general
 alias publicip='curl https://ipinfo.io/ip'
 alias ls='ls --color'
@@ -26,8 +33,30 @@ alias gs='git stash'
 alias k='kubectl'
 alias cleankconfig='rm -rf ~/.kube/http-cache;rm -rf ~/.kube/cache;rm -rf ~/.kube/cache/oidc-login'
 
-if [[ -d $HOME/.cfg ]]; then
-    #echo -e "setting alias to $HOME/.cfg"
-    alias cdcfg='cd $HOME/.cfg'
-    export PATH=$PATH:$CFG_DIR/usefulscripts
-fi
+# build cscope functions
+mkcd()
+{
+  test -e "$1" || mkdir -p "$1"
+  cd "$1"
+}
+
+# This will create a cscope folder database in the WorkRepos dir
+# Run in project root folder
+cscope_build()
+{
+    PROJECT_ROOT="$(pwd)"
+    REPO_NAME="$(basename "$PWD")"
+    database_dir=~/WorkRepos/cscope_databases/$REPO_NAME/`git symbolic-ref --short HEAD`/
+    echo "cscope database will be created in dir '$database_dir'"
+    mkcd "${database_dir}"
+    test -e source_code.files && rm source_code.files
+    test -e cscope.out && rm cscope.out
+    test -e ctags.out && rm ctags.out
+    find $PROJECT_ROOT  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' >> source_code.files
+    find $PROJECT_ROOT -name '*.py' >> source_code.files
+    cscope -b -i source_code.files -f cscope.out
+    ctags -L source_code.files -f ctags.out
+    export CSCOPE_DB="${database_dir}/cscope.out"
+    export CTAGS_DB="${database_dir}/ctags.out"
+    cd -
+}

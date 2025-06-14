@@ -3,8 +3,6 @@ if which tmux >/dev/null 2>&1; then
   test -z "$TMUX" && (tmux -2 attach || tmux -2 new-session)
 fi
 
-export DATA_DIR='/data'
-export CFG_DIR=$HOME/.cfg # in bashrc_0
 export PATH="/usr/local/bin:$PATH"
 
 # Enable the subsequent settings only in interactive sessions
@@ -14,7 +12,7 @@ case $- in
 esac
 
 # Path to your oh-my-bash installation.
-export OSH=$HOME/oh-my-bash
+export OSH=$HOME/.oh-my-bash
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
@@ -120,26 +118,6 @@ plugins=(
 #      plugins+=(tmux-autoattach)
 #  fi
 
-# source "$OSH"/oh-my-bash.sh
-
-mkcd()
-{
-  test -e "$1" || mkdir -p "$1"
-  cd "$1"
-}
-
-code()
-{
-    export SQL_H="${DATA_DIR}/mysql/"
-    ctag_dir=$DATA_DIR/cscope/mysql/`git symbolic-ref --short HEAD`/
-    echo $ctag_dir
-    mkcd "${ctag_dir}"
-    test -e cscope.out && rm cscope.out
-    find $SQL_H  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' >> cscope.files
-    find $PY_H -name '*.py' >> cscope.files
-    cscope -b
-    export CSCOPE_DB="${ctag_dir}/cscope.out"
-    cd -
-}
+source "$OSH"/oh-my-bash.sh
 
 source .aliases
