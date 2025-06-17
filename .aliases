@@ -44,19 +44,39 @@ mkcd()
 # Run in project root folder
 cscope_build()
 {
-    PROJECT_ROOT="$(pwd)"
-    REPO_NAME="$(basename "$PWD")"
-    database_dir=~/WorkRepos/cscope_databases/$REPO_NAME/`git symbolic-ref --short HEAD`/
-    echo "cscope database will be created in dir '$database_dir'"
-    mkcd "${database_dir}"
+    CURRENT_DIR="$(PWD)"
+    echo "Current Working dir:$CURRENT_DIR"
+
+    # Find the Git root directory
+    if ! PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); then
+        echo "Error: Not inside a Git repository."
+        return 1
+    fi
+    echo "Found project root in: $PROJECT_ROOT"
+
+    cd "$PROJECT_ROOT" || return 1
+
+    REPO_NAME="$(basename "$PROJECT_ROOT")"
+    BRANCH_NAME="$(git symbolic-ref --short HEAD 2>/dev/null || echo 'detached')"
+    echo "Repository name: $REPO_NAME, branch:$BRANCH_NAME"
+    database_dir=~/WorkRepos/cscope_databases/$REPO_NAME/$BRANCH_NAME
+
+    echo "Cscope database will be created in dir:$database_dir"
+    mkcd "${database_dir}" || return 1
+
     test -e source_code.files && rm source_code.files
     test -e cscope.out && rm cscope.out
     test -e ctags.out && rm ctags.out
-    find $PROJECT_ROOT  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' -o -name '*.cc' >> source_code.files
-    find $PROJECT_ROOT -name '*.py' >> source_code.files
+
+    find $PROJECT_ROOT  \( -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' \
+                           -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' \
+                           -o -name '*.l' -o -name '*.cc' -o -name '*.py' \) >> source_code.files
+
     cscope -b -i source_code.files -f cscope.out
     ctags -L source_code.files -f ctags.out
+
     export CSCOPE_DB="${database_dir}/cscope.out"
     export CTAGS_DB="${database_dir}/ctags.out"
-    cd -
+
+    cd $CURRENT_DIR || return 1
 }
