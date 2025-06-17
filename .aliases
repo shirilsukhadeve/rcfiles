@@ -52,7 +52,7 @@ cscope_build()
     test -e source_code.files && rm source_code.files
     test -e cscope.out && rm cscope.out
     test -e ctags.out && rm ctags.out
-    find $PROJECT_ROOT  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' >> source_code.files
+    find $PROJECT_ROOT  -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' -o -name '*.l' -o -name '*.cc' >> source_code.files
     find $PROJECT_ROOT -name '*.py' >> source_code.files
     cscope -b -i source_code.files -f cscope.out
     ctags -L source_code.files -f ctags.out

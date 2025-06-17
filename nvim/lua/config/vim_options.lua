@@ -26,6 +26,7 @@ opt.smartcase = true
 opt.autoread = true
 opt_local.spelllang = "en_us"
 opt.mouse = a -- Enable mouse support
+opt.clipboard = "unnamedplus"
 opt.showmatch = true -- show matching braces
 opt.foldenable = false
 opt.foldlevel = 99
