@@ -44,8 +44,8 @@ mkcd()
 # Run in project root folder
 cscope_build()
 {
-    CURRENT_DIR="$(PWD)"
-    echo "Current Working dir:$CURRENT_DIR"
+    CURRENT_DIR="$(pwd)"
+    echo "Current Working dir: $CURRENT_DIR"
 
     # Find the Git root directory
     if ! PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null); then
@@ -58,11 +58,11 @@ cscope_build()
 
     REPO_NAME="$(basename "$PROJECT_ROOT")"
     BRANCH_NAME="$(git symbolic-ref --short HEAD 2>/dev/null || echo 'detached')"
-    echo "Repository name: $REPO_NAME, branch:$BRANCH_NAME"
-    database_dir=~/WorkRepos/cscope_databases/$REPO_NAME/$BRANCH_NAME
+    echo "Repository name: $REPO_NAME, branch: $BRANCH_NAME"
+    DATABASE_DIR=~/WorkRepos/cscope_databases/$REPO_NAME/$BRANCH_NAME
 
-    echo "Cscope database will be created in dir:$database_dir"
-    mkcd "${database_dir}" || return 1
+    echo "Cscope database will be created in dir: $DATABASE_DIR"
+    mkcd "${DATABASE_DIR}" || return 1
 
     test -e source_code.files && rm source_code.files
     test -e cscope.out && rm cscope.out
@@ -75,8 +75,8 @@ cscope_build()
     cscope -b -i source_code.files -f cscope.out
     ctags -L source_code.files -f ctags.out
 
-    export CSCOPE_DB="${database_dir}/cscope.out"
-    export CTAGS_DB="${database_dir}/ctags.out"
+    export CSCOPE_DB="${DATABASE_DIR}/cscope.out"
+    export CTAGS_DB="${DATABASE_DIR}/ctags.out"
 
     cd $CURRENT_DIR || return 1
 }
