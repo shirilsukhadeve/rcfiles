@@ -18,7 +18,6 @@ local mason_lspconfig = {
     opts = {
         ensure_installed = {
             "efm",
-            "tsserver",
             "lua_ls",
             "clangd",
         },
