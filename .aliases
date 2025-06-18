@@ -58,25 +58,75 @@ cscope_build()
 
     REPO_NAME="$(basename "$PROJECT_ROOT")"
     BRANCH_NAME="$(git symbolic-ref --short HEAD 2>/dev/null || echo 'detached')"
-    echo "Repository name: $REPO_NAME, branch: $BRANCH_NAME"
-    DATABASE_DIR=~/WorkRepos/cscope_databases/$REPO_NAME/$BRANCH_NAME
+    REMOTE_BRANCH="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || echo 'no-remote')"
+    CURRENT_COMMIT_HASH="$(git rev-parse HEAD)"
+    echo "Repository: $REPO_NAME, Branch: $BRANCH_NAME, Remote: $REMOTE_BRANCH, Commit: $CURRENT_COMMIT_HASH"
 
-    echo "Cscope database will be created in dir: $DATABASE_DIR"
+    DATABASE_DIR=~/WorkRepos/cscope_databases/$REPO_NAME/$BRANCH_NAME
+    LOCK_FILE="${DATABASE_DIR}/cscope.lock"
+    MANIFEST_FILE="${DATABASE_DIR}/manifest"
+
+    echo "Cscope database dir: $DATABASE_DIR"
     mkcd "${DATABASE_DIR}" || return 1
 
-    test -e source_code.files && rm source_code.files
-    test -e cscope.out && rm cscope.out
-    test -e ctags.out && rm ctags.out
+    # Locking mechanism
+    if [ -e "$LOCK_FILE" ]; then
+        echo "Error: Another cscope build is in progress (lock file exists at $LOCK_FILE)."
+        echo "If this is a stale lock, you may remove it manually."
+        cd "$CURRENT_DIR" || return 1
+        return 1
+    fi
 
-    find $PROJECT_ROOT  \( -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' \
-                           -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' \
-                           -o -name '*.l' -o -name '*.cc' -o -name '*.py' \) >> source_code.files
+    touch "$LOCK_FILE"
 
-    cscope -b -i source_code.files -f cscope.out
-    ctags -L source_code.files -f ctags.out
+    BUILD_NEEDED=1
+
+    if [ -e "$MANIFEST_FILE" ]; then
+        echo "Manifest found. Checking for changes..."
+        STORED_COMMIT_HASH=$(grep "^Commit:" "$MANIFEST_FILE" | awk '{print $2}')
+
+        if [ "$STORED_COMMIT_HASH" = "$CURRENT_COMMIT_HASH" ] && [ -e cscope.out ] && [ -e ctags.out ] && [ -e source_code.files ]; then
+            echo "No changes detected. Skipping cscope and ctags rebuild."
+            BUILD_NEEDED=0
+        else
+            echo "Commit hash changed. Rebuilding cscope and ctags."
+        fi
+    else
+        echo "Manifest not found. Rebuilding cscope and ctags."
+    fi
+
+    if [ "$BUILD_NEEDED" -eq 1 ]; then
+        rm -f source_code.files cscope.out ctags.out 2>/dev/null
+
+        echo "Indexing source files..."
+        find $PROJECT_ROOT  \( -name '*.h' -o -name '*.hpp' -o -name '*.c' -o -name '*.cpp' \
+                               -o -name '*.cxx' -o -name '*.idl' -o -name '*.icpp' -o -name '*.y' \
+                               -o -name '*.l' -o -name '*.cc' -o -name '*.py' \) > source_code.files
+
+        FILE_COUNT=$(wc -l < source_code.files)
+
+        echo "Building cscope database..."
+        cscope -b -i source_code.files -f cscope.out
+        echo "Building ctags database..."
+        ctags -L source_code.files -f ctags.out
+
+        TIMESTAMP=$(date "+%Y-%m-%d %H:%M:%S")
+        cat > "$MANIFEST_FILE" <<EOF
+Repository: $REPO_NAME
+Branch: $BRANCH_NAME
+Remote: $REMOTE_BRANCH
+Commit: $CURRENT_COMMIT_HASH
+Build Time: $TIMESTAMP
+Files Indexed: $FILE_COUNT
+EOF
+
+        echo "Manifest updated."
+    fi
 
     export CSCOPE_DB="${DATABASE_DIR}/cscope.out"
     export CTAGS_DB="${DATABASE_DIR}/ctags.out"
 
+    rm -f "$LOCK_FILE"
     cd $CURRENT_DIR || return 1
+    echo "cscope_build completed successfully."
 }
