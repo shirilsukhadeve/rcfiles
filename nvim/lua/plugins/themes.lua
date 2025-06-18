@@ -1,31 +1,54 @@
 return {
-  -- the colorscheme should be available when starting Neovim
-  {
-    "folke/tokyonight.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    -- config = function()
-    --   -- load the colorscheme here
-    --   vim.cmd([[colorscheme tokyonight]])
-    -- end,
-  },
+    "zaldih/themery.nvim",
+    lazy = false,
+    dependencies = {
+        "EdenEast/nightfox.nvim",
+        {"catppuccin/nvim", name = "catppuccin"},
+        "folke/tokyonight.nvim",
+        "rebelot/kanagawa.nvim",
+        "shaunsingh/moonlight.nvim",
+        "scottmckendry/cyberdream.nvim",
+        {'bluz71/vim-moonfly-colors', name = "moonfly"},
+        'olivercederborg/poimandres.nvim',
+        'nyoom-engineering/oxocarbon.nvim',
+        'Shatur/neovim-ayu',
+        "bluz71/vim-nightfly-guicolors",
+        'ribru17/bamboo.nvim',
+        { "rose-pine/neovim", name = "rose-pine" },
+        "kepano/flexoki-neovim",
+        "olimorris/onedarkpro.nvim",
+    },
 
-  {
-    "EdenEast/nightfox.nvim",
-    lazy = false, -- make sure we load this during startup if it is your main colorscheme
-    priority = 1000, -- make sure to load this before all the other start plugins
-    -- config = function()
-    --   -- load the colorscheme here
-    --   vim.cmd([[colorscheme nightfox]])
-    -- end,
-  },
-
-  {
-    "bluz71/vim-nightfly-guicolors",
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
-      -- load the colorscheme here
-      vim.cmd([[colorscheme nightfly]])
-    end,
-  },
+    opts = {
+        themes = {
+            "nightfox",
+            "catppuccin-latte",
+            "catppuccin-frappe",
+            "catppuccin-macchiato",
+            "catppuccin-mocha",
+            "tokyonight",
+            "tokyonight-night",
+            "kanagawa-wave",
+            "kanagawa-dragon",
+            "kanagawa-lotus",
+            "rose-pine",
+            "moonlight",
+            "cyberdream",
+            "moonfly",
+            "nightfly",
+            "oxocarbon",
+            "poimandres",
+            "ayu",
+            "bamboo",
+            "carbonfox",
+            "flexoki-dark",
+            "flexoki-light",
+            "onedark",
+            "onelight",
+            "onedark_vivid",
+            "onedark_dark",
+            "vaporwave"
+        },
+        livePreview = true,
+    }
 }

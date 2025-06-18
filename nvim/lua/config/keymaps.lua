@@ -41,6 +41,9 @@ keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore sessi
 keymap.set("n", "<leader>ps", "<cmd>lua ToggleProfiling()<CR>", { desc = "Toggle profiling" })
 keymap.set("n", "<leader>pp", "<cmd>lua TogglePlugins()<CR>", { desc = "Toggle Plogins" })
 
+-- theme selector
+keymap.set("n", "<leader>ts", "<cmd>Themery<CR>", { desc = "Theme Selector" })
+
 local vim_modes = {
     n = "n",
     i = "i",
