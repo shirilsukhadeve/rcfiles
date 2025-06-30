@@ -123,4 +123,11 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-source .aliases
+export HIVE_HOME=/Users/shirilsukhadeve/WorkRepos/apache-hive-metastore-3.0.0-bin
+export PATH=$HIVE_HOME/bin:$PATH
+export SPARK_HOME=/Users/shirilsukhadeve/WorkRepos/spark-3.5.6-bin-hadoop3
+export PATH=$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH
+export HADOOP_HOME=/Users/shirilsukhadeve/WorkRepos/hadoop-3.4.1
+export PATH=$HADOOP_HOME/bin:$PATH
+
+source ~/.aliases
